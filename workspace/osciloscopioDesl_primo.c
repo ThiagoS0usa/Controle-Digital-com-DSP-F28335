@@ -2,35 +2,35 @@
  *  osciloscopioDesl_primo.c
  *  Created on: 9 de julho de 2021
  *  Author: Everton Reis
- *  Permite otimizar a memÛria para o armazenamento dos pontos
+ *  Permite otimizar a mem√≥ria para o armazenamento dos pontos
  */
 #include "DSP2833x_Device.h" //para aceitar os tipos de dados redefinidos Uint16 e int16, int32 etc;
 #include <stdlib.h>
-    Uint16 trigger = 0, //indica que n„o houve captura e est· a procura do evento. Se 1, encontrou o sinal de interesse
-                ix = 4, //NÌvel horizontal do trigger
-				nivel_trigger = 4000;//NÌvel vertical do trigger repare q no teste contempla a igualdade, mas pode ser borda de subida, descida, etc.
+    Uint16 trigger = 0, //indica que n√£o houve captura e est√° a procura do evento. Se 1, encontrou o sinal de interesse
+                ix = 4, //N√≠vel horizontal do trigger
+				nivel_trigger = 4000;//N√≠vel vertical do trigger repare q no teste contempla a igualdade, mas pode ser borda de subida, descida, etc.
 	Uint16 i_wrap;
 	Uint16 num_pontos=1009, num_canais=2, automatico = 0, source_trigger=0, borda_descida = 0,
 		   inicializar = 1, falha_aloc = 0;//parametros globais no arquivo e que devem estar disponiveis no arquivo principal com "extern"
     enum Etapas {armazenar, formatar, stop, set} etapa = set;
     Uint16 **matriz = NULL, **canal=NULL, **mptr_fila = NULL, **mfila = NULL;//quero ter vetor de ponteiros tb
-//protÛtipos das funÁıes neste arquivo
-void criar_matriz();// sÛ pra tirar o warnning "funtion "criar_matriz" declared"//aloca espaÁo para todos os pontos de todos os canais
+//prot√≥tipos das fun√ß√µes neste arquivo
+void criar_matriz();// s√≥ pra tirar o warnning "funtion "criar_matriz" declared"//aloca espa√ßo para todos os pontos de todos os canais
 void gereNum_primo();
 void plot();
 
 void plot() {
-	static int16 inc, al; //variavel static dentro da funÁ„o, CAPture mais sinais atÈ completar a metade do vetor
+	static int16 inc, al; //variavel static dentro da fun√ß√£o, CAPture mais sinais at√© completar a metade do vetor
 	static Uint16 i = 0, j=0, cap = 0;
 	Uint16 seleciona_canal;//variavel auxiliar para selecionar canais para preenchimento dos pontos
     switch(etapa) {
     case armazenar:
-    	if (i >= num_pontos) //corrige possÌveis acessos fora dos limites do vetor
+    	if (i >= num_pontos) //corrige poss√≠veis acessos fora dos limites do vetor
     	        i = i - num_pontos;
     	for (seleciona_canal=0; seleciona_canal < num_canais; seleciona_canal++){
     		matriz[seleciona_canal][i] = *canal[seleciona_canal];//armazena o sinal de interesse na linha da matriz
     	}
-    	if (trigger == 0) {//se È para triggar algum evento
+    	if (trigger == 0) {//se √© para triggar algum evento
             if ((matriz[source_trigger][i] >= nivel_trigger)^borda_descida) {// criterio por edge(borda). Se borda_descida = 1; vai pegar a borda de descida
                 al = (int16)(i - ix);
                 if (al>=0) {
@@ -38,17 +38,17 @@ void plot() {
                 	cap = ix;
                 }
             }//fim teste nivelvdo trigger
-        } else {//se triggou, conte atÈ armazenar o final do vetor
+        } else {//se triggou, conte at√© armazenar o final do vetor
             cap++;//contando
         }
         i++;//indexador para armazenamento
         if (cap >= num_pontos) {
             	etapa = formatar;
-                j = 0;//a partir daqui atÈ na linha onde se tem "i_wrap=al", inicializa tudo para poder formatar
+                j = 0;//a partir daqui at√© na linha onde se tem "i_wrap=al", inicializa tudo para poder formatar
                 inc = -1;
                 for (seleciona_canal = 0; seleciona_canal < num_canais; ++seleciona_canal) {
-					mptr_fila[seleciona_canal] = mfila[seleciona_canal];//endereÁo
-					*mptr_fila[seleciona_canal] = matriz[seleciona_canal][al];//conte˙do
+					mptr_fila[seleciona_canal] = mfila[seleciona_canal];//endere√ßo
+					*mptr_fila[seleciona_canal] = matriz[seleciona_canal][al];//conte√∫do
 					mptr_fila[seleciona_canal]++;
 				}
         	    i_wrap = al;
@@ -59,7 +59,7 @@ void plot() {
 			i_wrap += num_pontos - al;//oti
 			if (i_wrap >= num_pontos) i_wrap -= num_pontos;//se passar do limite do vetor, ache o indice adequado
 
-			for (seleciona_canal = 0; seleciona_canal < num_canais; ++seleciona_canal) {//faz a formataÁ„o para esquerda
+			for (seleciona_canal = 0; seleciona_canal < num_canais; ++seleciona_canal) {//faz a formata√ß√£o para esquerda
 				*mptr_fila[seleciona_canal] = matriz[seleciona_canal][i_wrap];
 				mptr_fila[seleciona_canal] += inc;
 				matriz[seleciona_canal][i_wrap] = *mptr_fila[seleciona_canal];
@@ -67,7 +67,7 @@ void plot() {
 			inc = -inc;
         } else etapa = stop;
         break;
-    case stop: //etapas visiveis ao usu·rio.
+    case stop: //etapas visiveis ao usu√°rio.
         if (trigger == 0) {//se trigger nulo, fique armazenando os pontos
             etapa = armazenar;
             i = 0; cap=0;
@@ -81,9 +81,9 @@ void plot() {
 		} //else_if
         break;
     case set:
-    	if (inicializar) {//vai fazer uma ˙nica vez assim que inicializar for !=0
+    	if (inicializar) {//vai fazer uma √∫nica vez assim que inicializar for !=0
 			inicializar = 0;
-			gereNum_primo(); //gere n˙mero primo para que o algoritmo de deslocamento (etapa formatar) funcione
+			gereNum_primo(); //gere n√∫mero primo para que o algoritmo de deslocamento (etapa formatar) funcione
 			if (matriz != NULL) { // se a matriz foi criada antes, elimine-a e todos os outros ponteiros auxiliares
 				Uint16 aux1;
 				for (aux1 = 0; aux1 < num_canais; aux1++) {
@@ -92,19 +92,19 @@ void plot() {
 					free(mfila[aux1]);
 					mfila[aux1] = NULL;
 				}
-				free(canal);free(matriz);free(mptr_fila);free(mfila); //libera a memÛria reservada para esses 4 ponteiros
+				free(canal);free(matriz);free(mptr_fila);free(mfila); //libera a mem√≥ria reservada para esses 4 ponteiros
 				matriz = NULL;canal = NULL;mptr_fila = NULL;mfila = NULL; //e os inicializo com NULL
 			} // fim se a matriz foi criada
 			criar_matriz(); //criar matriz
-			if (falha_aloc) //falhou a alocaÁ„o
+			if (falha_aloc) //falhou a aloca√ß√£o
 				break; //saia imediatamente
-			else //n„o houve falha na alocaÁ„o, Ûtimo
+			else //n√£o houve falha na aloca√ß√£o, √≥timo
 			{
 				etapa = armazenar;
 				static Uint16 cont = 1;
 				if (cont) {
-					cont = 0; //sÛ carrega uma vez sÛ, logo apÛs a primeira inicializaÁ„o
-					canal[0] = &AdcMirror.ADCRESULT0; //na pr·tica essa atribuiÁ„o vai ser na janela EXPRESSION
+					cont = 0; //s√≥ carrega uma vez s√≥, logo ap√≥s a primeira inicializa√ß√£o
+					canal[0] = &AdcMirror.ADCRESULT0; //na pr√°tica essa atribui√ß√£o vai ser na janela EXPRESSION
 					canal[1] = &AdcMirror.ADCRESULT1;
 				}
 			}
@@ -113,32 +113,32 @@ void plot() {
 }//retorne
 
 void criar_matriz(){//cria a matriz de pontos e os ponteiros auxiliares
-	Uint16 i;//para o laÁo for a seguir
-	matriz = ((Uint16 **) malloc(num_canais * sizeof(Uint16*)));//inicializa o ponteiro duplo matriz com um endereÁo estim·vel !=NULL
+	Uint16 i;//para o la√ßo for a seguir
+	matriz = ((Uint16 **) malloc(num_canais * sizeof(Uint16*)));//inicializa o ponteiro duplo matriz com um endere√ßo estim√°vel !=NULL
 	canal = ((Uint16 **) malloc(num_canais * sizeof(Uint16*)));//" para o ponteiro duplo canal
 	mfila = ((Uint16 **) malloc(num_canais * sizeof(Uint16*)));//" " ... mfila
-	mptr_fila = ((Uint16 **) malloc(num_canais * sizeof(Uint16*)));//cada mptr_fila[i] ser· um ponteiro
+	mptr_fila = ((Uint16 **) malloc(num_canais * sizeof(Uint16*)));//cada mptr_fila[i] ser√° um ponteiro
 
-	if ( (matriz == NULL) || (canal == NULL) || (mfila == NULL) || (mptr_fila == NULL)) {//se houver falla na alocaÁ„o,
+	if ( (matriz == NULL) || (canal == NULL) || (mfila == NULL) || (mptr_fila == NULL)) {//se houver falla na aloca√ß√£o,
 		falha_aloc = 1; return;//sinalize e saia imediatamente
 	}
 	//canal[i] acessivel no "expression view"
-	for (i = 0; i < num_canais; i++) { //criaÁ„o da matriz toda de fato
+	for (i = 0; i < num_canais; i++) { //cria√ß√£o da matriz toda de fato
 		matriz[i] = (Uint16 *) malloc(num_pontos * sizeof(Uint16));//minha matriz[i] tem que ter num_pontos colunas
 		mfila[i] = (Uint16 *) malloc(2 * sizeof(Uint16));//meu vetor mfila[i] tem que ter apenas 2 colunas
-		if ((matriz[i] == NULL) || (mfila[i] == NULL)){//se falhou a criaÁ„o do vetor de duas posiÁıes,
+		if ((matriz[i] == NULL) || (mfila[i] == NULL)){//se falhou a cria√ß√£o do vetor de duas posi√ß√µes,
 			falha_aloc = 1;//sinalize
 			return;// e saia imediatamente
 		}
 	}
 }
-//funÁ„o necess·ria para que o meu algortimo de deslocamento funcione corretamente
-void gereNum_primo() {	Uint16 j;//para o laÁo for a seguir
+//fun√ß√£o necess√°ria para que o meu algortimo de deslocamento funcione corretamente
+void gereNum_primo() {	Uint16 j;//para o la√ßo for a seguir
     (num_pontos & 1) ? : num_pontos++; //
     volta:
-    for (j = 3; j < num_pontos; j += 2) { //num_pontos aqui tem que ser sempre Ìmpar
+    for (j = 3; j < num_pontos; j += 2) { //num_pontos aqui tem que ser sempre √≠mpar
         if (( num_pontos % j) == 0) {
-        	num_pontos += 2;//avanÁa para um n˙mero maior de pontos, atÈ que seja Ìmpar e primo
+        	num_pontos += 2;//avan√ßa para um n√∫mero maior de pontos, at√© que seja √≠mpar e primo
             goto volta;
         }
     }
