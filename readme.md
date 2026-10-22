@@ -5,7 +5,6 @@ ADCRESULT0 (Vout) - A01
 EPWM1 - Pino 0
 
 Esquemática:
-
                 |C1|
 EPWM --- R1 ----|C2|---GND
              |  |C3|
