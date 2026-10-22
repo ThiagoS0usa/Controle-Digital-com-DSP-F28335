@@ -7,8 +7,8 @@ typedef struct DadosTemporizador {
 	bool to;//true se houver estouro do timer
 } DT;
 //HELP
-//o par‚metro tempo de DT tem que ser menor do que CpuTimer0Regs.PRD.all
-bool TO(DT* dt);//indica se houve ou n„o estouro do tempo
-void RT(DT* dt);//Reseta a temporizaÁ„o
+//o par√¢metro tempo de DT tem que ser menor do que CpuTimer0Regs.PRD.all
+bool TO(DT* dt);//indica se houve ou n√£o estouro do tempo
+void RT(DT* dt);//Reseta a temporiza√ß√£o
 Uint32 cronometro(DT* dt, bool tic);
 #endif
