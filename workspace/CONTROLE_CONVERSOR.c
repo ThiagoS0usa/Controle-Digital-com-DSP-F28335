@@ -1,21 +1,21 @@
-//##############################DescriÁ„o#############################################
-//Este cÛdigo implementa um controle digital simples de um conversor boost cl·ssico
+//##############################Descri√ß√£o#############################################
+//Este c√≥digo implementa um controle digital simples de um conversor boost cl√°ssico
 //mapeamento de pinos
 //GPIO63,65,66,67,69,71,73 como GPIO normal. GPIO75 -> LED
-//EPWM1A e EPWM1B. Pino de TZ1 ativado para forÁar PWM1A e B em zero
+//EPWM1A e EPWM1B. Pino de TZ1 ativado para for√ßar PWM1A e B em zero
 //###########################################################################
 // $Release Date: 17/02/2021, Autor: Everton Reis
 //###########################################################################
 #include "DSP28x_Project.h"
-#include "io.h" //arquivo gerado pelo muxpin tool para selecionar a funÁ„o dos pinos
+#include "io.h" //arquivo gerado pelo muxpin tool para selecionar a fun√ß√£o dos pinos
 #include <stdlib.h>
 //#include "lib_osciloscopio.h"
 #include "temporizacao_funcoes.h"
 #include "botao.h"
-#include "SFRA_includes.h"// para incluir todos os header files e as vari·veis globais
+#include "SFRA_includes.h"// para incluir todos os header files e as vari√°veis globais
 float Duty_pu_DC = 0.35f;//valor para teste inicial de razao ciclica para varredura em frequencia em malha aberta
-//===========================protÛtipos das funÁıes===================================
-void setup_DSP();//configura o hardware do DSP e inicializa vari·veis
+//===========================prot√≥tipos das fun√ß√µes===================================
+void setup_DSP();//configura o hardware do DSP e inicializa vari√°veis
 void InitTripZone();
 void HRPWM2_Config(Uint16 period);
 void DAC(Uint16 periodo);
@@ -31,13 +31,13 @@ Uint32 LoopCount, ConversionCount, var, inicial_time, WakeCount = 0, deon = 0;
 float tensao, corrente, erro, kiL=0.1540f, kVc= 0.0129f, kerro= 0.0161f;
 float duty = 0.5, duty_teste = 0.55, ref = 16.0f, integrando = 0;
 
-Uint16 periodo = 20, dutyfine = 1, liga_controle = 4, ser = 1, SendChar = 0, testar = 0;//testar bot„o
+Uint16 periodo = 20, dutyfine = 1, liga_controle = 4, ser = 1, SendChar = 0, testar = 0;//testar bot√£o
 Uint16 sdata, rdata, ErrorCount, ReceivedChar, tempo_exe, sinal;
 char kmpc=1;
 
-//parametro ."tempo" n„o pode passar o range de contagem do timer0
-DT dt1 = {.tempo=149000000UL,.to=false};//C99 inicializaÁ„o designada do C99 para o objeto dt1
-DT dt2 = {.tempo=140000000UL,.to=false};//note que: .captimer e .to n„o foram inicializados
+//parametro ."tempo" n√£o pode passar o range de contagem do timer0
+DT dt1 = {.tempo=149000000UL,.to=false};//C99 inicializa√ß√£o designada do C99 para o objeto dt1
+DT dt2 = {.tempo=140000000UL,.to=false};//note que: .captimer e .to n√£o foram inicializados
 DB bot, bot1;// = {{15015015,0,false},0,0};
 //DEON
 //#define TAM 503
@@ -49,7 +49,7 @@ enum EtapasControle {malhaAberta, SFRA, SFRA_MF,confParametros, malhaFechada} ac
 main() {
 
 	RT(&dt1);	RT(&dt2);
-	Config_botao(46, &bot, 100);//Inicializando com essas funÁıes
+	Config_botao(46, &bot, 100);//Inicializando com essas fun√ß√µes
 	Config_botao(47, &bot1, 100);//100ms de tempo de debouncing aproximadamente
 	prepara_pino(39,1);
 	setup_DSP();
@@ -71,16 +71,16 @@ main() {
 	} // fim do for
 } // fim da main
 
-__interrupt void adc_isr(void) { // a cada tÈrmino de uma sequÍncia, que È iniciado pelo perÌodo do PWM
+__interrupt void adc_isr(void) { // a cada t√©rmino de uma sequ√™ncia, que √© iniciado pelo per√≠odo do PWM
 //GpioDataRegs.GPBCLEAR.bit.GPIO48 = 1;// tic, acende led,no caso do LED da placa, nivel baixo faz acender
-	float constante_conversao = 3.0f / 4096.0f;//temos tambÈm um offset de 24mV a mais na mediÁ„o
-	tensao = 21.64f*((AdcMirror.ADCRESULT0) * constante_conversao - 24e-3f - 1.5f); //(AdcMirror.ADCRESULT0) * constante_conversao - 24e-3f; *tens„o = ADCMIRROR.ADCRESULT0
+	float constante_conversao = 3.0f / 4096.0f;//temos tamb√©m um offset de 24mV a mais na medi√ß√£o
+	tensao = 21.64f*((AdcMirror.ADCRESULT0) * constante_conversao - 24e-3f - 1.5f); //(AdcMirror.ADCRESULT0) * constante_conversao - 24e-3f; *tens√£o = ADCMIRROR.ADCRESULT0
 	//tensao = (AdcMirror.ADCRESULT0) * constante_conversao;//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	corrente = -12.65f*((AdcMirror.ADCRESULT1) * constante_conversao - 24e-3f - 1.5f);//Voltage2[ConversionCount]
 //==============================================================================
-//TODO controle, ponha as suas equaÁıes de controle digital aqui
+//TODO controle, ponha as suas equa√ß√µes de controle digital aqui
 //==============================================================================
-// fim divisor de frequÍncia por SW
+// fim divisor de frequ√™ncia por SW
 	static float refde = 0.8f;
 	float Vout1_Read;
 	static float filtrado = 0.0f;
@@ -119,7 +119,7 @@ __interrupt void adc_isr(void) { // a cada tÈrmino de uma sequÍncia, que È inici
 	case SFRA_MF:
 		if (BP(&bot1)) if (refde > 0.81f) refde = 0.8; else refde = 0.83;
 		Vout1_Read = (float32) (AdcMirror.ADCRESULT0)/(4096.0f);//valor em P.U //((tensao / (21.64f)) + 1.5f) / (3.0f);
-		float ref = SFRA_F_INJECT(refde); //esta func„o nao altera o seu parametro de entrada
+		float ref = SFRA_F_INJECT(refde); //esta func√£o nao altera o seu parametro de entrada
 		static Uint16 refe;
 		refe = (Uint16) (ref * 5000);
 		if (++LoopCount > 21) { //div_sw por 22, => 1 ms
@@ -154,7 +154,7 @@ __interrupt void adc_isr(void) { // a cada tÈrmino de uma sequÍncia, que È inici
 		break;
 	}
 //==============================================================================
-//               Roda a assistÍncia de osciloscÛpio
+//               Roda a assist√™ncia de oscilosc√≥pio
 //==============================================================================
 	cronometro(&dtc, false); //tic .all
 	plot();
@@ -169,7 +169,7 @@ __interrupt void adc_isr(void) { // a cada tÈrmino de uma sequÍncia, que È inici
 	}//GpioDataRegs.GPBSET.bit.GPIO48 = 1;//toc, apaga led
 }
 
-//interrupÁıes auxiliares
+//interrup√ß√µes auxiliares
 __interrupt void cpu_timer0_isr(void) {//1  segundo
 	//GpioDataRegs.GPBTOGGLE.bit.GPIO61 = 1;
 	//DEON
@@ -198,7 +198,7 @@ __interrupt void cpu_timer2_isr(void) {//1 milisegundo
 	//background loop do SFRA a cada 1 ms
 	SFRA_F_BACKGROUND(&SFRA1);
 	SerialCommsTimer++;//SFRA
-	static char cont = 0;//divisor de frequÍncia por software
+	static char cont = 0;//divisor de frequ√™ncia por software
 	if (++cont >= 5) {
 		cont = 0;
 		SerialHostComms();//rodar isto a 5 ms
@@ -219,7 +219,7 @@ __interrupt void wakeint_isr(void) { // a cada 4,37 ms
 
 void InitTripZone() {
 	EALLOW;
-	//TRIP ZONE, configuraÁıes necess·rias. Com resistor de pull-up ativado e sem filtro(asynch) e
+	//TRIP ZONE, configura√ß√µes necess√°rias. Com resistor de pull-up ativado e sem filtro(asynch) e
 	GpioCtrlRegs.GPAPUD.bit.GPIO12 = 0;    // Enable pull-up on GPIO12 (TZ1)
 	GpioCtrlRegs.GPAQSEL1.bit.GPIO12 = 3;  // Asynch input GPIO12 (TZ1)
 	EPwm1Regs.TZSEL.bit.OSHT1 = 1; //One-shot TZ1 select
@@ -233,14 +233,14 @@ void InitTripZone() {
 
 void InitGpio() {
 	EALLOW;
-	//escolha a funÁ„o do pino, default GPIO. A ferramenta PIN MUX TOOL nos auxilia e em muito nisso
+	//escolha a fun√ß√£o do pino, default GPIO. A ferramenta PIN MUX TOOL nos auxilia e em muito nisso
 	GpioCtrlRegs.GPAMUX1.all = GPAMUX1_VALUE; // GPIO functionality GPIO0-GPIO15
 	GpioCtrlRegs.GPAMUX2.all = GPAMUX2_VALUE; // GPIO functionality GPIO16-GPIO31
 	GpioCtrlRegs.GPBMUX1.all = GPBMUX1_VALUE; // GPIO functionality GPIO32-GPIO39
 	GpioCtrlRegs.GPBMUX2.all = GPBMUX2_VALUE; // GPIO functionality GPIO48-GPIO63
 	GpioCtrlRegs.GPCMUX1.all = GPCMUX1_VALUE; // GPIO functionality GPIO64-GPIO79
 	GpioCtrlRegs.GPCMUX2.all = GPCMUX2_VALUE; // GPIO functionality GPIO80-GPIO95
-	//<<<<< escolha a direÁ„o do pino GP{A,B,C}{DIR}
+	//<<<<< escolha a dire√ß√£o do pino GP{A,B,C}{DIR}
 	//Barra de LEDs smds
 	//GpioCtrlRegs.GPBDIR.bit.GPIO46 = 0;//configurar para entrada de botao
 	//GpioCtrlRegs.GPBPUD.bit.GPIO46 = 0;//com pull-up
@@ -313,7 +313,7 @@ void DAC(Uint16 period){
 	Uint16 inteiro = (Uint16) (Valor_flutuante);
 	EALLOW;
 	EPwm2Regs.CMPA.half.CMPA = inteiro;	  //duty*periodo
-	EPwm2Regs.CMPA.half.CMPAHR =  ((Uint16)((Valor_flutuante - inteiro)*37 + 1.5f) << 8);  // parte fracion·ria
+	EPwm2Regs.CMPA.half.CMPAHR =  ((Uint16)((Valor_flutuante - inteiro)*37 + 1.5f) << 8);  // parte fracion√°ria
 	//EPwm2Regs.CMPA.all = ((Uint32)EPwm2Regs.CMPA.half.CMPA << 16) + (DutyFine << 8);
 	EDIS;
 }
@@ -372,7 +372,7 @@ void iniciar_SFRAeGUI(void){
 
 void setup_DSP(){
 	InitSysCtrl();
-	InitGpio(); //<<<<<<<<<<<<<<<<< para configurar a funÁ„o do pino
+	InitGpio(); //<<<<<<<<<<<<<<<<< para configurar a fun√ß√£o do pino
 	InitTripZone();
 
 	DINT;
@@ -396,7 +396,7 @@ void setup_DSP(){
 	InitCpuTimers();
 	InitSpi();
 	//InitSci();
-	InitPWM(); // funÁ„o criada por mim, inicializa PWM
+	InitPWM(); // fun√ß√£o criada por mim, inicializa PWM
 	EALLOW;
 	GpioCtrlRegs.GPAMUX1.bit.GPIO2 = 1;   // Configure GPIO2 as EPWM2A
 	EDIS;
@@ -419,7 +419,7 @@ void setup_DSP(){
 	PieCtrlRegs.PIEIER2.bit.INTx1 = 1; // Enable EPWM INTn in the PIE: Group 2 interrupt 1-3
 
 	IER |= M_INT1;
-	IER |= M_INT2; // para habilitar a interrupÁ„o do grupo 2
+	IER |= M_INT2; // para habilitar a interrup√ß√£o do grupo 2
 	IER |= M_INT13;
 	IER |= M_INT14;
 	EINT;
@@ -443,7 +443,7 @@ void setup_DSP(){
 
 //void sweep(Uint16 ad_result,float duty_ref_dc, bool tipo){//0 duty, 1 para Ref
 //float Vout1_Read = (float32) (ad_result)/(4096.0f);//((tensao/(21.64f)) + 1.5f)/(3.0f);
-//float duty_ref = SFRA_F_INJECT(duty_ref_dc);//esta func„o nao altera o seu parametro de entrada
+//float duty_ref = SFRA_F_INJECT(duty_ref_dc);//esta func√£o nao altera o seu parametro de entrada
 //static float duty;
 //	if (tipo){
 //		if (++LoopCount > 21) { //div_sw por 22, => 1 ms
