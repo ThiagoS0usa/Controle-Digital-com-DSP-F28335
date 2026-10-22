@@ -467,7 +467,7 @@ interrupt void ADCINT_ISR(void)     // ADC
 	//
 	// Insert ISR Code here
 	//
-//extern	Uint16 LoopCount; //ou aqui ou no início do arquivo
+//extern	Uint16 LoopCount; //ou aqui ou no inÃ­cio do arquivo
 //extern	Uint16 ConversionCount;
 //extern	Uint16 Voltage1[10];
 //extern	Uint16 Voltage2[10];
