@@ -12,7 +12,7 @@ bool BP(DB* db){ bool pressionado = false;
 	if (db->osc) {
 		if (TO(&(db->dt)))
 			db->osc = false;
-	} else { //sem oscilação, ok
+	} else { //sem oscilaÃ§Ã£o, ok
 		Uint16 pino_lido = le_pino(db->pino);
 		if (pino_lido != db->est) { //houve borda ?
 			db->osc = 1;
@@ -23,7 +23,7 @@ bool BP(DB* db){ bool pressionado = false;
 		db->est = pino_lido; //inicia_re(&reles[0]);
 	}
 	return pressionado;
-}//função BP
+}//funÃ§Ã£o BP
 
 void Config_botao(int16 pino, DB * db, Uint16 tempo_ms){ //anti_bouncing em ms
 	db->pino = pino;
@@ -33,13 +33,13 @@ void Config_botao(int16 pino, DB * db, Uint16 tempo_ms){ //anti_bouncing em ms
 	prepara_pino(0,pino);//prepara_pino como entrada
 }
 
-void prepara_pino(int16 pino, Uint16 modo){//0 entrada, modo 1 para saída,
+void prepara_pino(int16 pino, Uint16 modo){//0 entrada, modo 1 para saÃ­da,
 	Uint16 mod = pino/32; Uint16 resto = pino%32; Uint32 valor = ((Uint32)1<<resto);
 	EALLOW;
 	switch (mod) {
 	case 0:
 		if (modo){
-			GpioCtrlRegs.GPADIR.all |= valor; //configurar saída para LED
+			GpioCtrlRegs.GPADIR.all |= valor; //configurar saÃ­da para LED
 			GpioCtrlRegs.GPAPUD.all |= valor; //desabilitanto pull-up
 		}
 		else {
@@ -49,7 +49,7 @@ void prepara_pino(int16 pino, Uint16 modo){//0 entrada, modo 1 para saída,
 		break;
 	case 1:
 		if (modo) {
-			GpioCtrlRegs.GPBDIR.all |= valor; //configurar saída para LED
+			GpioCtrlRegs.GPBDIR.all |= valor; //configurar saÃ­da para LED
 			GpioCtrlRegs.GPBPUD.all |= valor; //desabilitanto pull-up
 		} else {
 			GpioCtrlRegs.GPBDIR.all &= ~valor; //configurar para entrada de botao
@@ -58,7 +58,7 @@ void prepara_pino(int16 pino, Uint16 modo){//0 entrada, modo 1 para saída,
 		break;
 	case 2:
 		if (modo) {
-			GpioCtrlRegs.GPCDIR.all |= valor; //configurar saída para LED
+			GpioCtrlRegs.GPCDIR.all |= valor; //configurar saÃ­da para LED
 			GpioCtrlRegs.GPCPUD.all |= valor; //desabilitanto pull-up
 		} else {
 			GpioCtrlRegs.GPCDIR.all &= ~valor; //configurar para entrada de botao
@@ -87,5 +87,5 @@ Uint16 le_pino(Uint16 pino){
 	if (est)
 		return 1;
 	else
-		return 0; //retorna o estado do pino, se entrada ou saída
+		return 0; //retorna o estado do pino, se entrada ou saÃ­da
 }
