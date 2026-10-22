@@ -57,7 +57,7 @@ void InitAdc(void) {
 	AdcRegs.ADCTRL1.bit.ACQ_PS = 0xf;
 	AdcRegs.ADCTRL1.bit.SEQ_CASC = 0;        // 0 Non-Cascaded Mode
 	AdcRegs.ADCTRL3.bit.ADCCLKPS = 3; //para dividir por 2*3 o clock HSPCLK          0x00E0 Power up bandgap/reference/ADC circuits
-	AdcRegs.ADCTRL3.bit.ADCBGRFDN = 3; //Liga o bandgap e referência
+	AdcRegs.ADCTRL3.bit.ADCBGRFDN = 3; //Liga o bandgap e referÃªncia
 	AdcRegs.ADCTRL3.bit.SMODE_SEL = 0; //modo sequencial
 	AdcRegs.ADCTRL3.bit.ADCPWDN = 1; //Liga o AD core
 	//DELAY_US(ADC_usDELAY);         // Delay before converting ADC channels
