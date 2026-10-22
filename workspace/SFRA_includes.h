@@ -28,8 +28,8 @@ float32 OL_MagVect[SFRA_FREQ_LENGTH];
 float32 OL_PhaseVect[SFRA_FREQ_LENGTH];
 float32 FreqVect[SFRA_FREQ_LENGTH];
 //function prototype list
-void SCIA_Init(long SCI_VBUS_CLOCKRATE, long SCI_BAUDRATE);//SFRA protótipo
-void SerialHostComms();//SFRA protótipo
+void SCIA_Init(long SCI_VBUS_CLOCKRATE, long SCI_BAUDRATE);//SFRA protÃ³tipo
+void SerialHostComms();//SFRA protÃ³tipo
 
 //criadas por mim para facilitar
 void iniciar_SFRAeGUI(void);//iniciar SFRA e dar suporte a janela SFRA GUI
