@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>Controle digital F28335</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.cdt.managedbuilder.core.genmakebuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.cdt.managedbuilder.core.ScannerConfigBuilder</name>
+			<triggers>full,incremental,</triggers>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.cdt.core.cnature</nature>
+		<nature>org.eclipse.cdt.core.ccnature</nature>
+		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
+		<nature>com.ti.ccstudio.core.ccsNature</nature>
+		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>28335_RAM_lnk.cmd</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Controle%20Digital%20com%20DSP%20F28335%20-%20CCS%20-OK/28335_RAM_lnk.cmd</locationURI>
+		</link>
+		<link>
+			<name>Lib_osciloscopio.lib</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Lib_osciloscopio/Debug/Lib_osciloscopio.lib</locationURI>
+		</link>
+	</linkedResources>
+	<variableList>
+		<variable>
+			<name>INSTALLROOT_2833X_V142</name>
+			<value>$%7BPARENT-2-ORIGINAL_PROJECT_ROOT%7D</value>
+		</variable>
+		<variable>
+			<name>INSTALLROOT_FASTRTS_V100</name>
+			<value>$%7BPARENT-5-ORIGINAL_PROJECT_ROOT%7D/libs/math/FPUfastRTS/V100</value>
+		</variable>
+		<variable>
+			<name>INSTALLROOT_IQMATH_V15c</name>
+			<value>$%7BPARENT-5-ORIGINAL_PROJECT_ROOT%7D/libs/math/IQmath/v15c</value>
+		</variable>
+		<variable>
+			<name>ORIGINAL_PROJECT_ROOT</name>
+			<value>file:/C:/ti/controlSUITE/device_support/f2833x/v142/DSP2833x_examples_ccsv5/adc_soc</value>
+		</variable>
+	</variableList>
+</projectDescription>
