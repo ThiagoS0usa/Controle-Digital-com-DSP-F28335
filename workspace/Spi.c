@@ -29,7 +29,7 @@ void spi_init(void);
 //
 void InitSpi(void) {
 	InitSpiaGpio();
-	spi_fifo_init();	 // Initialize the Spi FIFO //<<< o FIFO está desativado
+	spi_fifo_init();	 // Initialize the Spi FIFO //<<< o FIFO estÃ¡ desativado
 	spi_init();	 //
 	// Initialize SPI-A/B/C/D
 	//
@@ -118,7 +118,7 @@ void spi_init() {
 	SpiaRegs.SPICCR.all = 0x000F; // Reset on, rising edge, 16-bit char bits SPILBK <<<<posso zerar para desativar loop back
 	SpiaRegs.SPICTL.all = 0x0006;    		// Enable master mode, normal phase,
 											// enable talk, and SPI int disabled. //
-	SpiaRegs.SPIBRR = 0x0000;			//máxima velocidade possível, LOSPCP/4
+	SpiaRegs.SPIBRR = 0x0000;			//mÃ¡xima velocidade possÃ­vel, LOSPCP/4
 	SpiaRegs.SPICCR.all = 0x009F;		         // Relinquish SPI from Reset
 	SpiaRegs.SPIPRI.bit.FREE = 1;   // Set so breakpoints don't disturb xmission
 }
@@ -126,6 +126,6 @@ void spi_init() {
 void spi_fifo_init() {
 // Initialize SPI FIFO registers
 	SpiaRegs.SPIFFTX.all = 0xE040;
-	SpiaRegs.SPIFFRX.all = 0x204f; // <<< não usa o tal do FIFO
+	SpiaRegs.SPIFFRX.all = 0x204f; // <<< nÃ£o usa o tal do FIFO
 	SpiaRegs.SPIFFCT.all = 0x0;
 }
