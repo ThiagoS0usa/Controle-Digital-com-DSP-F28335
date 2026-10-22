@@ -2,13 +2,13 @@
  *  osciloscopioDesl_primo.c
  *  Created on: 9 de julho de 2021
  *  Author: Everton Reis
- *  Permite otimizar a memÛria para o armazenamento dos pontos
+ *  Permite otimizar a mem√≥ria para o armazenamento dos pontos
  */
 #include "DSP2833x_Device.h" //para aceitar os tipos de dados redefinidos Uint16 e int16, int32 etc;
 #include <stdlib.h>
-    Uint16 trigger = 0, //indica que n„o houve captura e est· a procura do evento. Se 1, encontrou o sinal de interesse
-                ix = 4; //NÌvel horizontal do trigger
-    Uint16 nivel_trigger = 100;//NÌvel vertical repare q no teste contempla a igualdade, mas pode ser borda de subida, descida, etc.
+    Uint16 trigger = 0, //indica que n√£o houve captura e est√° a procura do evento. Se 1, encontrou o sinal de interesse
+                ix = 4; //N√≠vel horizontal do trigger
+    Uint16 nivel_trigger = 100;//N√≠vel vertical repare q no teste contempla a igualdade, mas pode ser borda de subida, descida, etc.
     Uint16 fila[2], i_wrap;
     Uint16 num_canais=1;//DEON
     int16 num_pontos=503;//DEON
@@ -18,13 +18,13 @@
     Uint16 automatico = 0, source_trigger=0, borda_descida = 0; Uint16 inicializar = 1, falha_aloc = 0;
     Uint16 **matriz = NULL; Uint16 **canal=NULL; //
 
-void criar_matriz();// sÛ pra tirar o warnning "funtion "criar_matriz" declared"//aloca espaÁo para todos os pontos de todos os canais
+void criar_matriz();// s√≥ pra tirar o warnning "funtion "criar_matriz" declared"//aloca espa√ßo para todos os pontos de todos os canais
 
 void plot() {
-	static int16 j = 0,i = 0, cap = 0, inc, al; //variavel static dentro da funÁ„o, CAPture mais sinais atÈ completar a metade do vetor
+	static int16 j = 0,i = 0, cap = 0, inc, al; //variavel static dentro da fun√ß√£o, CAPture mais sinais at√© completar a metade do vetor
 	Uint16 *ptr_fila;
 	Uint16 seleciona_canal;//variavel auxiliar para selecionar canais para preenchimento dos pontos
-	if (i >= num_pontos) //corrige possÌveis acessos fora dos limites do vetor
+	if (i >= num_pontos) //corrige poss√≠veis acessos fora dos limites do vetor
         i = i - num_pontos;
     else if (i < 0)
         i = i + num_pontos;
@@ -41,7 +41,7 @@ void plot() {
                 	cap = ix;
                 }
             }//fim teste nivelvdo trigger
-        } else { //se triggou, conte atÈ armazenar o final do vetor
+        } else { //se triggou, conte at√© armazenar o final do vetor
             cap++; //contando
         }
         i++; // indexador para armazenamento
@@ -49,7 +49,7 @@ void plot() {
             	etapa = formatar;
                 j = 0;
                 inc = -1;//
-        	    ptr_fila = fila; // ponteiro recebe o endereÁo do vetor fila ou &fila[0]
+        	    ptr_fila = fila; // ponteiro recebe o endere√ßo do vetor fila ou &fila[0]
         	    *ptr_fila = matriz[0/*seleciona_canal*/][al];// fila[0] = primeiro parametro
         	    ptr_fila++;
         	    i_wrap = al;
@@ -65,7 +65,7 @@ void plot() {
 			inc = -inc;
         } else etapa = stop;
         break;
-    case stop: //etapas visiveis ao usu·rio. Quando stop=automatico = 0;
+    case stop: //etapas visiveis ao usu√°rio. Quando stop=automatico = 0;
         if (trigger == 0) {
             etapa = armazenar;
             i = 0; cap=0;
@@ -92,9 +92,9 @@ void plot() {
     			criar_matriz();
     			if (falha_aloc)
     				break;
-    			else //n„o houve falha na alocaÁ„o
+    			else //n√£o houve falha na aloca√ß√£o
     			etapa = armazenar;
-    			canal[0]= rampa; //&AdcMirror.ADCRESULT0;//EPwm1Regs.CMPA.half.CMPA;//// na pr·tica essa atribuiÁ„o vai ser na janela EXPRESSION
+    			canal[0]= rampa; //&AdcMirror.ADCRESULT0;//EPwm1Regs.CMPA.half.CMPA;//// na pr√°tica essa atribui√ß√£o vai ser na janela EXPRESSION
     			//canal[1]= &AdcMirror.ADCRESULT1;
     		}//if_inicializar
     } // fim do switch
@@ -110,7 +110,7 @@ void criar_matriz(){
 		falha_aloc = 1; return;
 	}
 	//canal[i] acessivel no "expression view"
-	for (i = 0; i < num_canais; i++) { //criaÁ„o da matriz toda de fato
+	for (i = 0; i < num_canais; i++) { //cria√ß√£o da matriz toda de fato
 		matriz[i] = (Uint16 *) malloc(num_pontos * sizeof(Uint16));
 		if (matriz[i] == NULL){
 			falha_aloc = 1;
