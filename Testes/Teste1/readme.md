@@ -22,3 +22,8 @@ SFRA: =~ 189 Hz
 Ganho em 10 Hz:<br>
 OCTAVE: -0.01306 dB<br>
 SFRA: 0.67 dB
+
+<img src="" alt="Gráfico SFRA" width="200">
+
+
+
