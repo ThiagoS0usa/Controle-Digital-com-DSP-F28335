@@ -13,12 +13,12 @@ EPWM --- R1 ----|-C2-|---GND
             ADC
 ```
 
-Teste 1 - Resistor 9.91k e capacitores em paralelo 32nF 32nF 30nF
+Teste 1 - Resistor 9.91k e capacitores em paralelo 28.5nF 29.9nF 29.8nF
 
 Cálculo Fc:<br>
-OCTAVE: ? Hz<br>
+OCTAVE: 182.18 Hz<br>
 SFRA: =~ 189 Hz 
 
 Ganho em 10 Hz:<br>
-OCTAVE: ? Hz<br>
+OCTAVE: -0.01306 dB<br>
 SFRA: 0.67 dB
