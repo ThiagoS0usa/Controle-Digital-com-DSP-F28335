@@ -5,7 +5,7 @@ ADCRESULT0 (Vout) - A01<br>
 EPWM1 - Pino 0
 
 Esquemática
-<img src="https://github.com/ThiagoS0usa/Controle-Digital-com-DSP-F28335/blob/1478ee37da903464e43427ceb360c76dcd8eb326/Testes/Teste1/img/montagem.png" alt="Esquemática" width="2000">
+<img src="Testes/Teste1/img/montagem.png" alt="Esquemática" width="2000">
 
 Teste 1 - Resistor 9.91k e capacitores em paralelo 28.5nF 29.9nF 29.8nF
 
