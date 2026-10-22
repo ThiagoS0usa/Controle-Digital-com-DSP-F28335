@@ -4,13 +4,13 @@
 #define valor_inicial_timer CpuTimer0Regs.TIM.all
 #define AC //com auto reset
 
-bool TO(DT * dt) { //função que retorna se estourou o tempo, TIME-OUT
+bool TO(DT * dt) { //funÃ§Ã£o que retorna se estourou o tempo, TIME-OUT
     if (cronometro(dt, true) > (dt->tempo)) {// passou do tempo?
         dt->captimer = CpuTimer0Regs.TIM.all;//valor atual do timer
         #ifdef AC //autoclear
         return true; //com dt->to =false ainda
         #elif 
-        dt->to = true;// só aqui que coloco como true
+        dt->to = true;// sÃ³ aqui que coloco como true
         #endif
     }
     return dt->to;
@@ -22,12 +22,12 @@ bool TO(DT * dt) { //função que retorna se estourou o tempo, TIME-OUT
  *
  * */
 
-void RT(DT * dt) { //função que reseta a temporização
+void RT(DT * dt) { //funÃ§Ã£o que reseta a temporizaÃ§Ã£o
     dt->to = false;
     dt->captimer = valor_inicial_timer;
 }
 
-Uint32 cronometro(DT* dt, bool tic){//retornar o tempo de execução
+Uint32 cronometro(DT* dt, bool tic){//retornar o tempo de execuÃ§Ã£o
 	if (tic) {
 		Uint32 valor_atual_timer = CpuTimer0Regs.TIM.all;
 		Uint32 delta_t = (Uint32)(dt->captimer - valor_atual_timer); //para timer decrescente
