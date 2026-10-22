@@ -39,7 +39,7 @@ void InitSysCtrl(void) {
 	DisableDog();
 	EALLOW;		// modo WDT, se vai resetar ou interromper
 	// Write to the whole SCSR register to avoid clearing WDOVERRIDE bit
-	SysCtrlRegs.SCSR = BIT1; //BIT1 (WDENINT interrupÁ„o do wdt habilitada) ou seja wdt como timer e causar interrupÁ„o
+	SysCtrlRegs.SCSR = BIT1; //BIT1 (WDENINT interrup√ß√£o do wdt habilitada) ou seja wdt como timer e causar interrup√ß√£o
 	EDIS;
 	//
 	// Initialize the PLL control: PLLCR and DIVSEL
@@ -141,7 +141,7 @@ void DisableDog(void) {
 	EDIS;
 }
 
-void EnableDog(void) { //CRIEI ESTA FUN«√O PARA HABILITAR O WDT
+void EnableDog(void) { //CRIEI ESTA FUN√á√ÉO PARA HABILITAR O WDT
 	EALLOW;
 	SysCtrlRegs.WDCR = 0x0028;
 	EDIS;
@@ -310,7 +310,7 @@ void InitPeripheralClocks(void) {
 	// Manual for more information.
 	//
 	ADC_cal();
-	//desabilitei alguns clocks n„o necess·rio, ou pelo menos por enquanto
+	//desabilitei alguns clocks n√£o necess√°rio, ou pelo menos por enquanto
 	SysCtrlRegs.PCLKCR0.bit.I2CAENCLK = 0;   // I2C       <<<<<<<<<
 	SysCtrlRegs.PCLKCR0.bit.SCIAENCLK = 1;   // SCI-A	  <<<Modificado<<<<<<
 	SysCtrlRegs.PCLKCR0.bit.SCIBENCLK = 0;   // SCI-B     <<<<<<<<<
