@@ -6,7 +6,7 @@
  */
 #ifndef BOTAO_H_
 #define BOTAO_H_
-#include "temporizacao_funcoes.h"//pra incluir t„o somente a definiÁ„o de DT
+#include "temporizacao_funcoes.h"//pra incluir t√£o somente a defini√ß√£o de DT
 
 typedef struct DadosBotao {
 	DT dt;//temporizador para tempo de bouncing
@@ -15,11 +15,11 @@ typedef struct DadosBotao {
 	Uint16 pino;
 } DB;
 //HELP
-//o par‚metro ....
-bool BP(DB* db);//indica Bot„o_pressionado
+//o par√¢metro ....
+bool BP(DB* db);//indica Bot√£o_pressionado
 void Config_botao(int16 pino, DB * db, Uint16 tempo_ms);
 void prepara_pino(int16 pino, Uint16 modo);//modo I/O, pino
 Uint16 le_pino(Uint16 pino);//e estado do pino
-//void BC(DT* dt);//Reseta a temporizaÁ„o
+//void BC(DT* dt);//Reseta a temporiza√ß√£o
 
 #endif /* BOTAO_H_ */
