@@ -28,7 +28,7 @@ __interrupt void cpu_timer2_isr(void);
 //void sweep(Uint16 ad_result,float duty_ref, bool tipo);
 
 Uint32 LoopCount, ConversionCount, var, inicial_time, WakeCount = 0, deon = 0;
-float tensao, corrente, erro, kiL=0.1540f, kVc= 0.0129f, kerro= 0.0161f;
+float tensao, corrente, erro, kiL=0.1540f, kVc= 0.0129f, kerro= 0.0161f, CTE_K;
 float duty = 0.5, duty_teste = 0.55, ref = 16.0f, integrando = 0;
 
 Uint16 periodo = 20, dutyfine = 1, liga_controle = 4, ser = 1, SendChar = 0, testar = 0;//testar botão
@@ -45,7 +45,7 @@ DT dtc = {.tempo=149000000UL,.to=false};
 extern Uint16 num_pontos,num_canais,automatico,source_trigger,trigger,borda_descida,inicializar,falha_aloc;
 extern void plot();
 extern enum Etapas etapa;
-enum EtapasControle {malhaAberta, SFRA, SFRA_MF,confParametros, malhaFechada} acionamento = SFRA;
+enum EtapasControle {malhaAberta, SFRA, SFRA_MF,confParametros, malhaFechada, SFRA_K} acionamento = SFRA_K;
 main() {
 
 	RT(&dt1);	RT(&dt2);
@@ -88,7 +88,7 @@ __interrupt void adc_isr(void) { // a cada término de uma sequência, que é in
 	static uint16_t ver_filtro;
 	ver_filtro = (Uint16)100*filtrado;
 	if (filtrado > 22.0f){
-		acionamento = SFRA;
+		acionamento = SFRA_K;
 		duty = 0.0f;
 		EPwm1Regs.CMPA.half.CMPA = (Uint16) (duty * (long) (BOOST_PWM_PERIOD));
 	}
@@ -116,7 +116,8 @@ __interrupt void adc_isr(void) { // a cada término de uma sequência, que é in
 		EPwm1Regs.CMPA.half.CMPA = ((long) (BOOST_PWM_PERIOD)) * Duty_pu;//Update PWM value
 		SFRA_F_COLLECT(&Duty_pu, &Vout1_Read);
 		break;
-	case SFRA_MF:
+
+	/* case SFRA_MF:
 		if (BP(&bot1)) if (refde > 0.81f) refde = 0.8; else refde = 0.83;
 		Vout1_Read = (float32) (AdcMirror.ADCRESULT0)/(4096.0f);//valor em P.U //((tensao / (21.64f)) + 1.5f) / (3.0f);
 		float ref = SFRA_F_INJECT(refde); //esta funcão nao altera o seu parametro de entrada
@@ -136,7 +137,32 @@ __interrupt void adc_isr(void) { // a cada término de uma sequência, que é in
 		}
 		EPwm1Regs.CMPA.half.CMPA = ((long) (BOOST_PWM_PERIOD)) * duty;//Update PWM value
 		SFRA_F_COLLECT(&duty, &Vout1_Read);//&duty
-		break;
+		break;*/
+
+	case SFRA_K:
+			if (BP(&bot1)) if (refde > 0.81f) refde = 0.8; else refde = 0.83;
+			Vout1_Read = (float32) (AdcMirror.ADCRESULT0)/(4096.0f);//valor em P.U //((tensao / (21.64f)) + 1.5f) / (3.0f);
+			float ref = SFRA_F_INJECT(refde); //esta funcão nao altera o seu parametro de entrada
+			static Uint16 refe;
+			refe = (Uint16) (ref * 5000);
+			if (++LoopCount > 21) { //div_sw por 22, => 1 ms
+				LoopCount = 0;
+				//erro = ref - Vout1_Read; //Vout1_Read em P.U
+				erro = (ref - Vout1_Read);
+				integrando = integrando + erro;
+
+				duty = (64.92f * kerro * integrando - kVc * tensao) * CTE_K;//ou o ganho: Vout1_Read * 64.92f
+				duty = duty - kiL * corrente;
+
+				if (duty > 0.85f)
+				   duty = 0.85f;
+				else if (duty < 0.0f)
+				   duty = 0.0f; //pra testar o duty fixo de 40% //EPwm1Regs.CMPA.half.CMPA = (Uint16) (duty * 3420.0);
+			}
+			EPwm1Regs.CMPA.half.CMPA = ((long) (BOOST_PWM_PERIOD)) * duty;//Update PWM value
+			SFRA_F_COLLECT(&duty, &Vout1_Read);//&duty
+			break;
+
 	case confParametros: //ajustar os parametros
 		duty = 0; integrando = 0;
 		if (kmpc) { // vai o MPC
