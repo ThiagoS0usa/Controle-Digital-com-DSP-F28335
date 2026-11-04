@@ -117,7 +117,7 @@ __interrupt void adc_isr(void) { // a cada término de uma sequência, que é in
 		SFRA_F_COLLECT(&Duty_pu, &Vout1_Read);
 		break;
 
-	/* case SFRA_MF:
+	case SFRA_MF:
 		if (BP(&bot1)) if (refde > 0.81f) refde = 0.8; else refde = 0.83;
 		Vout1_Read = (float32) (AdcMirror.ADCRESULT0)/(4096.0f);//valor em P.U //((tensao / (21.64f)) + 1.5f) / (3.0f);
 		float ref = SFRA_F_INJECT(refde); //esta funcão nao altera o seu parametro de entrada
@@ -137,31 +137,21 @@ __interrupt void adc_isr(void) { // a cada término de uma sequência, que é in
 		}
 		EPwm1Regs.CMPA.half.CMPA = ((long) (BOOST_PWM_PERIOD)) * duty;//Update PWM value
 		SFRA_F_COLLECT(&duty, &Vout1_Read);//&duty
-		break;*/
+		break;
+
 
 	case SFRA_K:
-			if (BP(&bot1)) if (refde > 0.81f) refde = 0.8; else refde = 0.83;
-			Vout1_Read = (float32) (AdcMirror.ADCRESULT0)/(4096.0f);//valor em P.U //((tensao / (21.64f)) + 1.5f) / (3.0f);
-			float ref = SFRA_F_INJECT(refde); //esta funcão nao altera o seu parametro de entrada
-			static Uint16 refe;
-			refe = (Uint16) (ref * 5000);
-			if (++LoopCount > 21) { //div_sw por 22, => 1 ms
-				LoopCount = 0;
-				//erro = ref - Vout1_Read; //Vout1_Read em P.U
-				erro = (ref - Vout1_Read);
-				integrando = integrando + erro;
+		Vout1_Read = (float32) (AdcMirror.ADCRESULT0)/(4096.0f);//valor em P.U //
+		float ref_K = SFRA_F_INJECT(refde); //esta funcão nao altera o seu parametro de entrada
 
-				duty = (64.92f * kerro * integrando - kVc * tensao) * CTE_K;//ou o ganho: Vout1_Read * 64.92f
-				duty = duty - kiL * corrente;
+		erro = (ref_K - Vout1_Read);
+		duty = erro * CTE_K;
 
-				if (duty > 0.85f)
-				   duty = 0.85f;
-				else if (duty < 0.0f)
-				   duty = 0.0f; //pra testar o duty fixo de 40% //EPwm1Regs.CMPA.half.CMPA = (Uint16) (duty * 3420.0);
-			}
-			EPwm1Regs.CMPA.half.CMPA = ((long) (BOOST_PWM_PERIOD)) * duty;//Update PWM value
-			SFRA_F_COLLECT(&duty, &Vout1_Read);//&duty
-			break;
+			if (duty < 0.0f) duty =0.0f;
+
+		EPwm1Regs.CMPA.half.CMPA = ((long) (BOOST_PWM_PERIOD)) * duty;//Update PWM value
+		SFRA_F_COLLECT(&duty, &Vout1_Read);//&duty
+		break;
 
 	case confParametros: //ajustar os parametros
 		duty = 0; integrando = 0;
