@@ -5,8 +5,8 @@
 Ver o comportamento dos gráficos de Open Loop e Plant no SFRA com uma constante multiplicando o duty no novo case criado chamado SFRA_K.
 COMPORTAMENTO ESPERADO: Deslocamento do gráfico de Open Loop e gráfico da planta fica intacto com mudanças de valores de CTE_K.
 
-Para CTE_K:
-CTE_K=1:
+## Para CTE_K:
+### CTE_K=1:
 
 <img src="https://github.com/ThiagoS0usa/Controle-Digital-com-DSP-F28335/blob/3b45d3df9e6dd775403766ea5458733eb078c4c4/Testes/Teste2/img/K%3D1.png" width="1000">
 
