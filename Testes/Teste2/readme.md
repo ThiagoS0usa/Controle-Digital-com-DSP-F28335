@@ -10,19 +10,19 @@ COMPORTAMENTO ESPERADO: Deslocamento do gráfico de Open Loop e gráfico da plan
 
 <img src="https://github.com/ThiagoS0usa/Controle-Digital-com-DSP-F28335/blob/3b45d3df9e6dd775403766ea5458733eb078c4c4/Testes/Teste2/img/K%3D1.png" width="1000">
 
-CTE_K=10:
+### CTE_K=10:
 
 <img src="https://github.com/ThiagoS0usa/Controle-Digital-com-DSP-F28335/blob/3b45d3df9e6dd775403766ea5458733eb078c4c4/Testes/Teste2/img/K%3D10.png" width="1000">
 
-CTE_K=50:
+### CTE_K=50:
 
 <img src="https://github.com/ThiagoS0usa/Controle-Digital-com-DSP-F28335/blob/3b45d3df9e6dd775403766ea5458733eb078c4c4/Testes/Teste2/img/K%3D50.png" width="1000">
 
-CTE_K=100: <br>
-Com injection amplitude=0.3:
+### CTE_K=100: <br>
+#### Com injection amplitude=0.3:
 
 <img src="https://github.com/ThiagoS0usa/Controle-Digital-com-DSP-F28335/blob/9cafb14d3da6040d8f31427cc689bb78c5669873/Testes/Teste2/img/K%3D100comInjectionMenor.png" width="1000">
 
-Com injection amplitude=0.01:
+#### Com injection amplitude=0.01:
 
 <img src="https://github.com/ThiagoS0usa/Controle-Digital-com-DSP-F28335/blob/3b45d3df9e6dd775403766ea5458733eb078c4c4/Testes/Teste2/img/K%3D100.png" width="1000">
