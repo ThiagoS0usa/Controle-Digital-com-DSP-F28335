@@ -8,3 +8,16 @@ Para CTE_K:
 CTE_K=1:
 
 <img src="https://github.com/ThiagoS0usa/Controle-Digital-com-DSP-F28335/blob/3b45d3df9e6dd775403766ea5458733eb078c4c4/Testes/Teste2/img/K%3D1.png" width="1000">
+
+CTE_K=10:
+
+<img src="https://github.com/ThiagoS0usa/Controle-Digital-com-DSP-F28335/blob/3b45d3df9e6dd775403766ea5458733eb078c4c4/Testes/Teste2/img/K%3D10.png" width="1000">
+
+CTE_K=50:
+
+<img src="https://github.com/ThiagoS0usa/Controle-Digital-com-DSP-F28335/blob/3b45d3df9e6dd775403766ea5458733eb078c4c4/Testes/Teste2/img/K%3D50.png" width="1000">
+
+CTE_K=100:
+Com injection amplitude=0.3:
+
+<img src="https://github.com/ThiagoS0usa/Controle-Digital-com-DSP-F28335/blob/3b45d3df9e6dd775403766ea5458733eb078c4c4/Testes/Teste2/img/K%3D100.png" width="1000">
