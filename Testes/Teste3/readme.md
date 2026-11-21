@@ -8,7 +8,7 @@ O arquivo contém 5 controladores diferentes. Iremos utilizar os 3 primeiros por
 
 ### Controlador 1
 
-<img src="https://github.com/ThiagoS0usa/Controle-Digital-com-DSP-F28335/blob/6fa2607f76c1d5783253497e750c730ad9d670ae/Testes/Teste1/img/montagem.png" alt="Esquemática" width="1000">
+<img src="https://github.com/ThiagoS0usa/Controle-Digital-com-DSP-F28335/blob/671f43f66feb31ddd38f730bc84455dba6d908fe/Testes/Teste3/img/PI1.png" alt="Esquemática" width="1000">
 
 
 
